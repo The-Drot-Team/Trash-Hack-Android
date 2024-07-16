@@ -12,13 +12,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
     fun tologinpage(view: View?) {
-        setContentView(R.layout.activity_login_page)
-        /*
+        // setContentView(R.layout.activity_login_page)
         val intent = Intent(this,LoginPage::class.java)
         startActivity(intent)
-         */
     }
     fun tosignuppage(view: View?) {
+        // setContentView(R.layout.activity_sign_up_page)
         val intent = Intent(this,SignUpPage::class.java)
         startActivity(intent)
     }

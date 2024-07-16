@@ -10,14 +10,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class LoginPage : AppCompatActivity() {
-    lateinit var inemail: EditText
-    lateinit var inpassword: EditText
+    // 'in' prefix for 'input'
+    lateinit var inemail: String
+    lateinit var inpassword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_page)
-        inemail = findViewById(R.id.email_input)
-        inpassword = findViewById(R.id.password_input)
+        inemail = findViewById<View?>(R.id.email_input).toString()
+        inpassword = findViewById<View?>(R.id.password_input).toString()
+    }
+    fun signin(view: View?) {
+        // server check
+        // if ok changes the layout
     }
     fun tosignuppage(view: View?) {
         val intent = Intent(this,SignUpPage::class.java)
