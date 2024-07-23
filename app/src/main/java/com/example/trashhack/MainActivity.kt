@@ -15,7 +15,8 @@ import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
-    lateinit var result: String
+    var result: String = ""
+
     // TODO: make it bring a user to the menu they belong to
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,27 +24,28 @@ class MainActivity : AppCompatActivity() {
 
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        viewModel.getPosts()
 
-        viewModel.myResponse.observe(this, Observer {
-                response ->
-            result = response.email
-        })
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
     fun getlog(view: View?) {
-        val result_text: TextView = findViewById(R.id.result)
-        result_text.setText(result)
-        Log.i("RESPONSE", result)
+        viewModel.getUsers()
+        val resulttext: TextView = findViewById(R.id.result)
+
+        viewModel.myResponse_users.observe(this, Observer{
+            response -> result = response.organization_id.toString()//resulttext.setText(response.email)
+        })
+
+        resulttext.setText(result)
+        Log.i("RESPONSE", result)//resulttext.text.toString())
     }
     fun tologinpage(view: View?) {
         // setContentView(R.layout.activity_login_page)
-        val intent = Intent(this,LoginPage::class.java)
+        val intent = Intent(this, LoginPage::class.java)
         startActivity(intent)
     }
     fun tosignuppage(view: View?) {
         // setContentView(R.layout.activity_sign_up_page)
-        val intent = Intent(this,SignUpPage::class.java)
+        val intent = Intent(this, SignUpPage::class.java)
         startActivity(intent)
     }
 }
