@@ -27,16 +27,25 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
+
     fun getlog(view: View?) {
-        viewModel.getUsers()
         val resulttext: TextView = findViewById(R.id.result)
+
+        viewModel.pushPostUsers(1, "hramov.sanya2018@yandex.ru", "NONE", "Khramov Alexander Dmitrievich","DEV", 0, 0, 0, "NONE")
+        viewModel.myPushResponse_users.observe(this, Observer{
+                response -> resulttext.text = response.body().toString()//resulttext.setText(response.email)
+        })
+        /*
+        viewModel.getUsers()
 
         viewModel.myResponse_users.observe(this, Observer{
             response -> result = response.organization_id.toString()//resulttext.setText(response.email)
         })
 
-        resulttext.setText(result)
-        Log.i("RESPONSE", result)//resulttext.text.toString())
+        resulttext.setText(result)//resulttext.text.toString())
+         */
+
+        Log.i("RESPONSE", resulttext.text.toString())
     }
     fun tologinpage(view: View?) {
         // setContentView(R.layout.activity_login_page)

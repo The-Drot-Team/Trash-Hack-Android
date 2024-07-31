@@ -1,7 +1,7 @@
 package com.example.trashhack.model
 
 data class Users (
-    val id: Int,
+    var id: Int,
     val email: String,
     val password_hash: String,
     val fullname: String, // Surname + Name + Patronymic
