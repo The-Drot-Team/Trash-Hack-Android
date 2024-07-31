@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel

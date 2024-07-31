@@ -14,11 +14,15 @@ interface API {
     @GET("users/1")
     suspend fun getusers() : Users
 
-
-    //@FormUrlEncoded
     @POST("post_users")
     @Headers("Content-Type: application/json")
     suspend fun pushpost(
         @Body temp: Users
+    ) : Response<Users>
+
+    @POST("register")
+    @Headers("Content-Type: application/json")
+    suspend fun register(
+        @Body temp: RegistrationForm
     ) : Response<Users>
 }

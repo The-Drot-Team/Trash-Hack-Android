@@ -1,10 +1,7 @@
 package com.example.trashhack.repository
 
-import android.util.Log
 import com.example.trashhack.api.RetrofitInstance
 import com.example.trashhack.model.*
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Response
 
 class Repository {
@@ -26,6 +23,16 @@ class Repository {
         current: String
     ): Response<Users> {
         var temp: Users = Users(id, email, passwordhash, fullname, role, organizationid, done, score, current)
+        return RetrofitInstance.api.pushpost(temp)
+    }
+    suspend fun register(
+        email: String,
+        password: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ): Response<Users> {
+        var temp: RegistrationForm = RegistrationForm()
         return RetrofitInstance.api.pushpost(temp)
     }
 }
