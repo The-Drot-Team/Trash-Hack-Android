@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface API {
     @GET("posts/1")
     suspend fun getposts() : Posts
-    @GET("users/1")
+    @GET("get_data/1")
     suspend fun getusers() : Users
 
     @POST("post_users")

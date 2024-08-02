@@ -25,6 +25,7 @@ class Repository {
         var temp: Users = Users(id, email, passwordhash, fullname, role, organizationid, done, score, current)
         return RetrofitInstance.api.pushpost(temp)
     }
+    /*
     suspend fun register(
         email: String,
         password: String,
@@ -35,4 +36,6 @@ class Repository {
         var temp: RegistrationForm = RegistrationForm()
         return RetrofitInstance.api.pushpost(temp)
     }
+
+     */
 }
