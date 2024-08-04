@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
+import com.example.trashhack.functions.*
+import com.example.trashhack.model.RegistrationForm
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -41,12 +43,25 @@ class SignUpPage : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
     fun signup(view: View?) {
-        //TODO: get rid of the unnecessary spaces in the string.
+        viewModel.register(
+            removespaces(inemail.text.toString()),
+            inpassword.text.toString(),
+            // I'm sorry, I've tried to make it beautiful but it just wouldn't work
+            // TODO: Make it beautiful
+            removespaces(insurname.text.toString()).plus(
+                onlyprefixspace(inname.text.toString()).plus(
+                    onlyprefixspace(inpatronymic.text.toString())
+                )
+            ),
+            "TEST",
+            0)
+        /*
         viewModel.pushPostUsers(0, inemail.text.toString(), inpassword.text.toString(), insurname.text.toString().plus(inname.text.toString().plus(inpatronymic.text.toString())),"NONE", 0, 0, 0, "NONE")
         viewModel.myPushResponse_users.observe(this, Observer{
                 response -> result = response.body().toString()//resulttext.setText(response.email)
         })
-        Log.i("RESPONSE", result)
+         */
+        // Log.i("RESPONSE", result)
         // server check
         // if ok changes the layout
     }

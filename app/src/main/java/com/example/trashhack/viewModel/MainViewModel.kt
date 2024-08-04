@@ -41,4 +41,17 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myPushResponse_users.value = response
         }
     }
+    fun register(
+        email: String,
+        password: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ) {
+        viewModelScope.launch {
+            //val response =
+            repository.register(email, password, fullname, role, organizationid)
+            //myPushResponse_users.value = response
+        }
+    }
 }

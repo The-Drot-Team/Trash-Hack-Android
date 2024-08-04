@@ -1,9 +1,9 @@
 package com.example.trashhack.model
 
 data class RegistrationForm(
-    val fullname: String,
     val email: String,
     val password: String,
+    val fullname: String,
     val role: String,
-    val organizationid: Int
+    val organization_id: Int
 )
