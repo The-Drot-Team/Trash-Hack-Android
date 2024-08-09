@@ -24,5 +24,5 @@ interface API {
     @Headers("Content-Type: application/json")
     suspend fun register(
         @Body temp: RegistrationForm
-    ) //: Response<Users>
+    ) : Response<CResponse>
 }

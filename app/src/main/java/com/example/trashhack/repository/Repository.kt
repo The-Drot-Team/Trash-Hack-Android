@@ -32,7 +32,7 @@ class Repository {
         fullname: String,
         role: String,
         organizationid: Int
-    ) //: Response<Users>
+    ) : Response<CResponse>
     {
         val temp: RegistrationForm = RegistrationForm(
             email,
@@ -41,6 +41,6 @@ class Repository {
             role,
             organizationid
         )
-        RetrofitInstance.api.register(temp)
+        return RetrofitInstance.api.register(temp)
     }
 }

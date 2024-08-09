@@ -2,6 +2,6 @@ package com.example.trashhack.utils
 
 class Constants {
     companion object {
-        const val BASE_URL = "https://test-back-end-trashhack.loca.lt" //"http://192.168.1.19:8000"
+        const val BASE_URL = "https://trashhack.loca.lt" //"http://192.168.1.19:8000" // test-back-end-
     }
 }
