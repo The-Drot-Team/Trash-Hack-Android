@@ -5,28 +5,67 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.trashhack.functions.*
+import com.example.trashhack.repository.Repository
+import com.example.trashhack.viewModel.MainViewModel
+import com.example.trashhack.viewModelFactory.MainViewModelFactory
 
 class LoginPage : AppCompatActivity() {
+    private lateinit var viewModel: MainViewModel
+    var result: String = ""
+    var result_bool: Boolean = true
     // 'in' prefix for 'input'
-    lateinit var inemail: String
-    lateinit var inpassword: String
+    lateinit var inemail: EditText
+    lateinit var inpassword: EditText
+    lateinit var debug: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_page)
-        inemail = findViewById<View?>(R.id.email_input).toString()
-        inpassword = findViewById<View?>(R.id.password_input).toString()
+
+        inemail = findViewById(R.id.email_input)
+        inpassword = findViewById(R.id.password_input)
+
+        val repository = Repository()
+        val viewModelFactory = MainViewModelFactory(repository)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
-    fun signin() { //view: View?) {
+    fun signin(view: View?) {
+        if (removespaces(inemail.text.toString()) == "" ||
+            removespaces(inpassword.text.toString()) == "") {
+            Toast.makeText(this, "You have an empty field", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (checkForInternet(this).not()) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show()
+            return
+        }
+
         // server check
-        // if ok changes the layout
+        viewModel.login(
+            removespaces(inemail.text.toString()),
+            removespaces(inpassword.text.toString())
+        )
+        viewModel.myCResponse.observe(this, Observer{
+            response -> result = response.body()?.message ?: "No response. Please try again."
+            result_bool = response.body()?.error ?: true
+            if (result_bool) {
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+            } else { // if ok changes the layout
+                Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
-    fun tosignuppage() { //view: View?) {
+    fun tosignuppage(view: View?) {
         val intent = Intent(this,SignUpPage::class.java)
         startActivity(intent)
     }

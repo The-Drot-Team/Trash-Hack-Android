@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,13 +21,13 @@ import com.example.trashhack.model.RegistrationForm
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     var result: String = ""
+    var result_bool: Boolean = true
     // 'in' prefix for 'input'
     lateinit var inemail: EditText
     lateinit var inpassword: EditText
     lateinit var insurname: EditText
     lateinit var inname: EditText
     lateinit var inpatronymic: EditText
-    lateinit var debug: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,6 @@ class SignUpPage : AppCompatActivity() {
         insurname = findViewById(R.id.surname_input)
         inname = findViewById(R.id.name_input)
         inpatronymic = findViewById(R.id.patronymic_input)
-        debug = findViewById(R.id.debug)
 
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
@@ -46,38 +45,35 @@ class SignUpPage : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
     fun signup(view: View?) {
-        if (inemail.text.toString() == "" ||
-            removespaces(inpassword.text.toString())== "" ||
+        if (removespaces(inemail.text.toString()) == "" ||
+            removespaces(inpassword.text.toString()) == "" ||
             removespaces(insurname.text.toString()) == "" ||
             removespaces(inname.text.toString()) == "") {
-            Log.i("InputValidityCheck", "an empty field")
+            Toast.makeText(this, "You have an empty field", Toast.LENGTH_SHORT).show()
             return
         }
+        if (checkForInternet(this).not()) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // server check
         viewModel.register(
             removespaces(inemail.text.toString()),
-            inpassword.text.toString(),
-            // I'm sorry, I've tried to make it beautiful but it just wouldn't work
-            // TODO: Make it beautiful
-            removespaces(insurname.text.toString()).plus(
-                onlyprefixspace(inname.text.toString()).plus(
-                    onlyprefixspace(inpatronymic.text.toString())
-                )
-            ),
+            removespaces(inpassword.text.toString()),
+            fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString()),
             "TEST",
-            0)
-        viewModel.myRegisterResponse.observe(this, Observer{
-                response -> result = response.body()?.message ?: "oops"//resulttext.setText(response.email)
-            debug.setText(result)
-            Log.i("RESPONSE", result)
+            0
+        )
+        viewModel.myCResponse.observe(this, Observer{
+            response -> result = response.body()?.message ?: "No response. Please try again."
+            result_bool = response.body()?.error ?: true
+
+            if (result_bool) {
+                Toast.makeText(this, "ERROR: ".plus(result), Toast.LENGTH_SHORT).show()
+            } else { // if ok changes the layout
+                Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
+            }
         })
-        /*
-        viewModel.pushPostUsers(0, inemail.text.toString(), inpassword.text.toString(), insurname.text.toString().plus(inname.text.toString().plus(inpatronymic.text.toString())),"NONE", 0, 0, 0, "NONE")
-        viewModel.myPushResponse_users.observe(this, Observer{
-                response -> result = response.body().toString()//resulttext.setText(response.email)
-        })
-         */
-        Log.i("RESPONSE", result)
-        // server check
-        // if ok changes the layout
     }
 }

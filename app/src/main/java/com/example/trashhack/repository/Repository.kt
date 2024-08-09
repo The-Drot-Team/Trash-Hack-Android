@@ -43,4 +43,16 @@ class Repository {
         )
         return RetrofitInstance.api.register(temp)
     }
+
+    suspend fun login(
+        email: String,
+        password: String
+    ) : Response<CResponse>
+    {
+        val temp: LogInForm = LogInForm(
+            email,
+            password
+        )
+        return RetrofitInstance.api.login(temp)
+    }
 }
