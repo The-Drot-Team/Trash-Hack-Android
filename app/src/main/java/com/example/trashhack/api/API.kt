@@ -11,14 +11,18 @@ import retrofit2.http.POST
 interface API {
     @GET("posts/1")
     suspend fun getposts() : Posts
-    @GET("users/1")
+    @GET("get_data/1")
     suspend fun getusers() : Users
 
-
-    //@FormUrlEncoded
     @POST("post_users")
     @Headers("Content-Type: application/json")
     suspend fun pushpost(
         @Body temp: Users
     ) : Response<Users>
+
+    @POST("register")
+    @Headers("Content-Type: application/json")
+    suspend fun register(
+        @Body temp: RegistrationForm
+    ) : Response<CResponse>
 }

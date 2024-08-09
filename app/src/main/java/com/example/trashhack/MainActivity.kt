@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
@@ -30,20 +29,22 @@ class MainActivity : AppCompatActivity() {
 
     fun getlog(view: View?) {
         val resulttext: TextView = findViewById(R.id.result)
+        /*
 
         viewModel.pushPostUsers(1, "hramov.sanya2018@yandex.ru", "NONE", "Khramov Alexander Dmitrievich","DEV", 0, 0, 0, "NONE")
         viewModel.myPushResponse_users.observe(this, Observer{
                 response -> resulttext.text = response.body().toString()//resulttext.setText(response.email)
         })
-        /*
+         */
+
         viewModel.getUsers()
 
         viewModel.myResponse_users.observe(this, Observer{
-            response -> result = response.organization_id.toString()//resulttext.setText(response.email)
+            response -> result = response.email.toString() //resulttext.setText(response.email)
         })
 
         resulttext.setText(result)//resulttext.text.toString())
-         */
+
 
         Log.i("RESPONSE", resulttext.text.toString())
     }

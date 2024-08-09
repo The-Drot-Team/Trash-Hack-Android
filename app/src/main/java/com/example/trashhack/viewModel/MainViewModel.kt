@@ -12,6 +12,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     val myResponse_posts: MutableLiveData<Posts> = MutableLiveData()
     val myResponse_users: MutableLiveData<Users> = MutableLiveData()
     val myPushResponse_users: MutableLiveData<Response<Users>> = MutableLiveData()
+    val myRegisterResponse: MutableLiveData<Response<CResponse>> = MutableLiveData()
 
     fun getPosts() {
         viewModelScope.launch {
@@ -39,6 +40,18 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         viewModelScope.launch {
             val response = repository.pushPostUsers(id, email, passwordhash, fullname, role, organizationid, done, score, current)
             myPushResponse_users.value = response
+        }
+    }
+    fun register(
+        email: String,
+        password: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ) {
+        viewModelScope.launch {
+            val response = repository.register(email, password, fullname, role, organizationid)
+            myRegisterResponse.value = response
         }
     }
 }
