@@ -11,8 +11,8 @@ import retrofit2.Response
 class MainViewModel(private val repository: Repository): ViewModel() {
     val myResponse_posts: MutableLiveData<Posts> = MutableLiveData()
     val myResponse_users: MutableLiveData<Users> = MutableLiveData()
-    val myPushResponse_users: MutableLiveData<Response<Users>> = MutableLiveData()
-    val myRegisterResponse: MutableLiveData<Response<CResponse>> = MutableLiveData()
+    // val myPushResponse_users: MutableLiveData<Response<Users>> = MutableLiveData()
+    val myCResponse: MutableLiveData<Response<CResponse>> = MutableLiveData()
 
     fun getPosts() {
         viewModelScope.launch {
@@ -26,6 +26,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myResponse_users.value = response
         }
     }
+    /*
     fun pushPostUsers(
         id: Int,
         email: String,
@@ -42,6 +43,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myPushResponse_users.value = response
         }
     }
+     */
     fun register(
         email: String,
         password: String,
@@ -51,7 +53,16 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     ) {
         viewModelScope.launch {
             val response = repository.register(email, password, fullname, role, organizationid)
-            myRegisterResponse.value = response
+            myCResponse.value = response
+        }
+    }
+    fun login(
+        email: String,
+        password: String
+    ) {
+        viewModelScope.launch {
+            val response = repository.login(email, password)
+            myCResponse.value = response
         }
     }
 }

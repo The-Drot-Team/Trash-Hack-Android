@@ -55,7 +55,7 @@ class SignUpPage : AppCompatActivity() {
         }
         viewModel.register(
             removespaces(inemail.text.toString()),
-            inpassword.text.toString(),
+            removespaces(inpassword.text.toString()),
             // I'm sorry, I've tried to make it beautiful but it just wouldn't work
             // TODO: Make it beautiful
             removespaces(insurname.text.toString()).plus(
@@ -65,7 +65,7 @@ class SignUpPage : AppCompatActivity() {
             ),
             "TEST",
             0)
-        viewModel.myRegisterResponse.observe(this, Observer{
+        viewModel.myCResponse.observe(this, Observer{
                 response -> result = response.body()?.message ?: "oops"//resulttext.setText(response.email)
             debug.setText(result)
             Log.i("RESPONSE", result)

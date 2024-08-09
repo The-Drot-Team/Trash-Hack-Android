@@ -25,4 +25,10 @@ interface API {
     suspend fun register(
         @Body temp: RegistrationForm
     ) : Response<CResponse>
+
+    @POST("login")
+    @Headers("Content-Type: application/json")
+    suspend fun login(
+        @Body temp: LogInForm
+    ) : Response<CResponse>
 }
