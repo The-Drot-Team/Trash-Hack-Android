@@ -1,5 +1,6 @@
 package com.example.trashhack
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
@@ -16,7 +19,8 @@ import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
 import com.example.trashhack.functions.*
-import com.example.trashhack.model.RegistrationForm
+import java.io.File
+import java.io.FileOutputStream
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -76,6 +80,10 @@ class SignUpPage : AppCompatActivity() {
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
+
+                val fileOutputStream: FileOutputStream = openFileOutput("hash", Context.MODE_PRIVATE)
+                fileOutputStream.write(result.toByteArray())
+
                 var intent = Intent(this, MainActivity::class.java)
                 when (result.subSequence(0, 3)) {
                     "DEV" -> {
@@ -87,9 +95,16 @@ class SignUpPage : AppCompatActivity() {
                         // post or get request to the server for a new hash
                     }
                 }
+                Toast.makeText(this, File("hash").readText(Charsets.UTF_8), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 this.finish()
             }
         })
+    }
+    fun tologinpage(view: View?) {
+        // setContentView(R.layout.activity_login_page)
+        val intent = Intent(this, LoginPage::class.java)
+        startActivity(intent)
+        this.finish()
     }
 }
