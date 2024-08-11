@@ -1,15 +1,12 @@
 <resources>
     <string name="app_name">TrashHack</string>
-    <string name="dev_welcome">Welcome to test menu</string>
-    <string name="dev_tologinpage">To \'Login\' page</string>
-    <string name="dev_tosignuppage">To \'Sign Up\' page</string>
 
     <string name="welcome_back">Welcome back!</string>
     <string name="welcome">Welcome!</string>
 
     <string name="prompt_surname">Surname</string>
     <string name="prompt_name">Name</string>
-    <string name="prompt_patronymic">Patronymic (if exists)</string>
+    <string name="prompt_patronymic">Patronymic (if available)</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -23,8 +20,12 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-
-    <string name="welcome_dev">"Welcome to the dev menu</string>
+    <string name="dev_welcome">Welcome to Devs menu</string>
     <string name="org_devs">"Developers</string>
     <string name="org_orgs">"Organizations</string>
+
+
+    <string name="logout">"Log out</string>
+
+
 </resources>

@@ -69,11 +69,12 @@ class LoginPage : AppCompatActivity() {
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
-                val fileOutputStream: FileOutputStream = openFileOutput("hash", Context.MODE_PRIVATE)
-                fileOutputStream.write(result.toByteArray())
+
+                File(this.cacheDir.path, "trash-hack.conf").writeText(result)
 
                 var intent = Intent(this, MainActivity::class.java)
-                when (result.subSequence(0, 3)) {
+                val hash = result.subSequence(0, 3)
+                when (hash) {
                     "DEV" -> {
                         intent = Intent(this, DevMainMenu::class.java)
                         //setContentView(R.layout.activity_dev_main_menu)
@@ -83,7 +84,8 @@ class LoginPage : AppCompatActivity() {
                         // post or get request to the server for a new hash
                     }
                 }
-                Toast.makeText(this, File("hash").readText(Charsets.UTF_8), Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(this, File(this.cacheDir.path, "trash-hack.conf").readText(Charsets.UTF_8), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 this.finish()
             }
