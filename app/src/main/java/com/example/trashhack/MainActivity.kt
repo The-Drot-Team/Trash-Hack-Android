@@ -30,10 +30,12 @@ class MainActivity : AppCompatActivity() {
         // setContentView(R.layout.activity_login_page)
         val intent = Intent(this, LoginPage::class.java)
         startActivity(intent)
+        this.finish()
     }
     fun tosignuppage(view: View?) {
         // setContentView(R.layout.activity_sign_up_page)
         val intent = Intent(this, SignUpPage::class.java)
         startActivity(intent)
+        this.finish()
     }
 }

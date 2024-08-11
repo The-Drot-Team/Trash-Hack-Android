@@ -20,8 +20,10 @@ import com.example.trashhack.model.RegistrationForm
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
+    /*
     var result: String = ""
     var result_bool: Boolean = true
+     */
     // 'in' prefix for 'input'
     lateinit var inemail: EditText
     lateinit var inpassword: EditText
@@ -66,13 +68,27 @@ class SignUpPage : AppCompatActivity() {
             0
         )
         viewModel.myCResponse.observe(this, Observer{
-            response -> result = response.body()?.message ?: "No response. Please try again."
-            result_bool = response.body()?.error ?: true
+            response -> val result = response.body()?.message ?: "No response. Please try again."
+            val result_bool = response.body()?.error ?: true
 
             if (result_bool) {
                 Toast.makeText(this, "ERROR: ".plus(result), Toast.LENGTH_SHORT).show()
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
+                var intent = Intent(this, MainActivity::class.java)
+                when (result.subSequence(0, 3)) {
+                    "DEV" -> {
+                        intent = Intent(this, DevMainMenu::class.java)
+                        //setContentView(R.layout.activity_dev_main_menu)
+                    }
+                    else -> {
+                        Toast.makeText(this, "INVALID HASH: New hash will be generated, please try again.", Toast.LENGTH_SHORT).show()
+                        // post or get request to the server for a new hash
+                    }
+                }
+                startActivity(intent)
+                this.finish()
             }
         })
     }
