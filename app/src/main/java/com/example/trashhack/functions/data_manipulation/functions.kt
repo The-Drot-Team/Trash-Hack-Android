@@ -12,3 +12,11 @@ fun logout(context: Context) {
     val intent = Intent(context, SignUpPage::class.java)
     context.startActivity(intent)
 }
+
+fun readhash(context: Context): String {
+    return File(context.cacheDir.path, "trash-hack.conf").readText(Charsets.UTF_8)
+}
+
+fun writehash(context: Context, result: String) {
+    File(context.cacheDir.path, "trash-hack.conf").writeText(result)
+}

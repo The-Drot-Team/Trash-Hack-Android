@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.functions.*
+import com.example.trashhack.functions.data_manipulation.*
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
@@ -70,7 +71,7 @@ class LoginPage : AppCompatActivity() {
                 Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
 
-                File(this.cacheDir.path, "trash-hack.conf").writeText(result)
+                writehash(this, result)
 
                 var intent = Intent(this, MainActivity::class.java)
                 val hash = result.subSequence(0, 3)
@@ -85,7 +86,7 @@ class LoginPage : AppCompatActivity() {
                     }
                 }
 
-                Toast.makeText(this, File(this.cacheDir.path, "trash-hack.conf").readText(Charsets.UTF_8), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, readhash(this), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 this.finish()
             }

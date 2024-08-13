@@ -32,8 +32,7 @@ class Repository {
         fullname: String,
         role: String,
         organizationid: Int
-    ) : Response<CResponse>
-    {
+    ) : Response<CResponse> {
         val temp: RegistrationForm = RegistrationForm(
             email,
             password,
@@ -42,6 +41,22 @@ class Repository {
             organizationid
         )
         return RetrofitInstance.api.register(temp)
+    }
+    suspend fun registerDevs(
+        email: String,
+        password: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ) : Response<CResponse> {
+        val temp: RegistrationForm = RegistrationForm(
+            email,
+            password,
+            fullname,
+            role,
+            organizationid
+        )
+        return RetrofitInstance.api.registerDevs(temp)
     }
 
     suspend fun login(

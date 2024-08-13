@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trashhack.functions.data_manipulation.readhash
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -18,10 +19,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var intent: Intent
 
         try {
-            hash = File(
-                this.cacheDir.path,
-                "trash-hack.conf"
-            ).readText(Charsets.UTF_8).subSequence(0, 3).toString() // TODO: format conf file to a json-like file
+            hash = readhash(this).subSequence(0, 3).toString() // TODO: format conf file to a json-like file
         } catch (e: FileNotFoundException) {
             intent = Intent(this, SignUpPage::class.java)
         }

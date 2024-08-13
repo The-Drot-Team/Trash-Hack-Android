@@ -1,34 +1,27 @@
 package com.example.trashhack
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.trashhack.functions.checkForInternet
+import com.example.trashhack.functions.data_manipulation.*
+import com.example.trashhack.functions.fullname
+import com.example.trashhack.functions.removespaces
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
-import com.example.trashhack.functions.*
-import com.example.trashhack.functions.data_manipulation.*
 import java.io.File
-import java.io.FileOutputStream
 
-class SignUpPage : AppCompatActivity() {
+class DevSignUp : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
-    /*
-    var result: String = ""
-    var result_bool: Boolean = true
-     */
     // 'in' prefix for 'input'
     lateinit var inemail: EditText
     lateinit var inpassword: EditText
@@ -38,7 +31,7 @@ class SignUpPage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up_page)
+        setContentView(R.layout.activity_dev_sign_up)
 
         inemail = findViewById(R.id.email_input)
         inpassword = findViewById(R.id.password_input)
@@ -64,48 +57,24 @@ class SignUpPage : AppCompatActivity() {
             return
         }
 
-        // server check
-        viewModel.register(
+        viewModel.registerDevs(
             removespaces(inemail.text.toString()),
             removespaces(inpassword.text.toString()),
             fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString()),
-            "TEST",
+            readhash(this),
             0
         )
         viewModel.myCResponse.observe(this, Observer{
-            response -> val result = response.body()?.message ?: "No response. Please try again."
+                response ->
+            val result = response.body()?.message ?: "No response. Please try again."
             val result_bool = response.body()?.error ?: true
 
             if (result_bool) {
                 Toast.makeText(this, "ERROR: ".plus(result), Toast.LENGTH_SHORT).show()
-            } else { // if ok changes the layout
-                Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
-
-                writehash(this, result)
-
-                var intent = Intent(this, MainActivity::class.java)
-                val hash = result.subSequence(0, 3)
-                when (hash) {
-                    "DEV" -> {
-                        intent = Intent(this, DevMainMenu::class.java)
-                        //setContentView(R.layout.activity_dev_main_menu)
-                    }
-                    else -> {
-                        Toast.makeText(this, "INVALID HASH: New hash will be generated, please try again.", Toast.LENGTH_SHORT).show()
-                        // post or get request to the server for a new hash
-                    }
-                }
-                Toast.makeText(this, readhash(this), Toast.LENGTH_SHORT).show()
-                startActivity(intent)
-                this.finish()
+            } else {
+                Toast.makeText(this, "Registered New Developer Successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-    fun tologinpage(view: View?) {
-        // setContentView(R.layout.activity_login_page)
-        val intent = Intent(this, LoginPage::class.java)
-        startActivity(intent)
-        this.finish()
     }
 }

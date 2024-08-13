@@ -11,6 +11,7 @@
         android:id="@+id/organize_devs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="todevregistrationpage"
         android:text="@string/org_devs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
