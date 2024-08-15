@@ -1,17 +1,12 @@
 package com.example.trashhack
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.functions.*
@@ -19,8 +14,9 @@ import com.example.trashhack.functions.data_manipulation.*
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
-import java.io.File
-import java.io.FileOutputStream
+import com.example.trashhack.functions.navigation.tosignuppage
+import com.example.trashhack.model.loggedin.LoggedInUser
+import com.example.trashhack.model.loggedin.LoggedInUser_instance
 
 class LoginPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -69,32 +65,32 @@ class LoginPage : AppCompatActivity() {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show()
-                Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
 
-                writehash(this, result)
+                writerole(this, result.subSequence(0, 3).toString())
+
+                LoggedInUser_instance.fullname = result.subSequence(4, result.length).toString()
+                Toast.makeText(this, "Welcome back!\n".plus(LoggedInUser_instance.fullname), Toast.LENGTH_SHORT).show()
 
                 var intent = Intent(this, MainActivity::class.java)
-                val hash = result.subSequence(0, 3)
-                when (hash) {
+                when (readrole(this)) { // it is used as a 'role' field
                     "DEV" -> {
+                        // get request to the server with the newly acquired data
                         intent = Intent(this, DevMainMenu::class.java)
                         //setContentView(R.layout.activity_dev_main_menu)
                     }
-                    else -> {
-                        Toast.makeText(this, "INVALID HASH: New hash will be generated, please try again.", Toast.LENGTH_SHORT).show()
-                        // post or get request to the server for a new hash
+                    else -> { // idk what could've happened here
+                        intent = Intent(this, SignUpPage::class.java)
                     }
                 }
 
-                Toast.makeText(this, readhash(this), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, readrole(this), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 this.finish()
             }
         })
     }
     fun tosignuppage(view: View?) {
-        val intent = Intent(this,SignUpPage::class.java)
-        startActivity(intent)
+        tosignuppage(this)
         this.finish()
     }
 }

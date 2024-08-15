@@ -1,14 +1,10 @@
 package com.example.trashhack
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.functions.checkForInternet
@@ -18,7 +14,6 @@ import com.example.trashhack.functions.removespaces
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
-import java.io.File
 
 class DevSignUp : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -61,7 +56,7 @@ class DevSignUp : AppCompatActivity() {
             removespaces(inemail.text.toString()),
             removespaces(inpassword.text.toString()),
             fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString()),
-            readhash(this),
+            readrole(this),
             0
         )
         viewModel.myCResponse.observe(this, Observer{

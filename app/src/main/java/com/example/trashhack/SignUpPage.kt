@@ -1,18 +1,11 @@
 package com.example.trashhack
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.repository.Repository
@@ -20,8 +13,7 @@ import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
 import com.example.trashhack.functions.*
 import com.example.trashhack.functions.data_manipulation.*
-import java.io.File
-import java.io.FileOutputStream
+import com.example.trashhack.functions.navigation.tologinpage
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -35,6 +27,8 @@ class SignUpPage : AppCompatActivity() {
     lateinit var insurname: EditText
     lateinit var inname: EditText
     lateinit var inpatronymic: EditText
+    lateinit var role: String
+    lateinit var organization_id: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +39,8 @@ class SignUpPage : AppCompatActivity() {
         insurname = findViewById(R.id.surname_input)
         inname = findViewById(R.id.name_input)
         inpatronymic = findViewById(R.id.patronymic_input)
+        role = "STU"
+        organization_id = "1"
 
         val repository = Repository()
         val viewModelFactory = MainViewModelFactory(repository)
@@ -69,25 +65,25 @@ class SignUpPage : AppCompatActivity() {
             removespaces(inemail.text.toString()),
             removespaces(inpassword.text.toString()),
             fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString()),
-            "TEST",
-            0
+            role,
+            organization_id.toInt()
         )
         viewModel.myCResponse.observe(this, Observer{
             response -> val result = response.body()?.message ?: "No response. Please try again."
             val result_bool = response.body()?.error ?: true
 
             if (result_bool) {
-                Toast.makeText(this, "ERROR: ".plus(result), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ERROR: ".plus(role), Toast.LENGTH_SHORT).show()
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
 
-                writehash(this, result)
+                //writerole(this, result)
 
                 var intent = Intent(this, MainActivity::class.java)
-                val hash = result.subSequence(0, 3)
-                when (hash) {
+                when (result) {
                     "DEV" -> {
+                        // get request to the server with the newly acquired data
                         intent = Intent(this, DevMainMenu::class.java)
                         //setContentView(R.layout.activity_dev_main_menu)
                     }
@@ -96,7 +92,7 @@ class SignUpPage : AppCompatActivity() {
                         // post or get request to the server for a new hash
                     }
                 }
-                Toast.makeText(this, readhash(this), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, readrole(this), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 this.finish()
             }
@@ -104,8 +100,7 @@ class SignUpPage : AppCompatActivity() {
     }
     fun tologinpage(view: View?) {
         // setContentView(R.layout.activity_login_page)
-        val intent = Intent(this, LoginPage::class.java)
-        startActivity(intent)
+        tologinpage(this)
         this.finish()
     }
 }

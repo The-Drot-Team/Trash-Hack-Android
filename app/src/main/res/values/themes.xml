@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.TrashHack" parent="Base.Theme.TrashHack" />
+    <style name="Theme.TrashHack.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.TrashHack.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.TrashHack.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
