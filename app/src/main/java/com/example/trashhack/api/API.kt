@@ -28,10 +28,11 @@ interface API {
     @POST("registration")
     @Headers("Content-Type: application/json")
     suspend fun register(@Body temp: RegistrationForm) : Response<CResponse>
-
-    @POST("devs")
+    /*
+    @POST("regdevs")
     @Headers("Content-Type: application/json")
     suspend fun registerDevs(@Body temp: RegistrationForm) : Response<CResponse>
+    */
 
     @POST("login")
     @Headers("Content-Type: application/json")

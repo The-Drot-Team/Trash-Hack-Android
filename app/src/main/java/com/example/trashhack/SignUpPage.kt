@@ -14,6 +14,8 @@ import com.example.trashhack.viewModelFactory.MainViewModelFactory
 import com.example.trashhack.functions.*
 import com.example.trashhack.functions.data_manipulation.*
 import com.example.trashhack.functions.navigation.tologinpage
+import com.example.trashhack.model.loggedin.LoggedInUser
+import com.example.trashhack.model.loggedin.LoggedInUser_instance
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -68,6 +70,8 @@ class SignUpPage : AppCompatActivity() {
             role,
             organization_id.toInt()
         )
+        writeinfo(this, LoggedInUser_instance.toString())
+
         viewModel.myCResponse.observe(this, Observer{
             response -> val result = response.body()?.message ?: "No response. Please try again."
             val result_bool = response.body()?.error ?: true
@@ -77,6 +81,12 @@ class SignUpPage : AppCompatActivity() {
             } else { // if ok changes the layout
                 Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
                 Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
+
+                LoggedInUser_instance = LoggedInUser(
+                    removespaces(inemail.text.toString()),
+                    removespaces(inpassword.text.toString()),
+                    fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString())
+                )
 
                 //writerole(this, result)
 

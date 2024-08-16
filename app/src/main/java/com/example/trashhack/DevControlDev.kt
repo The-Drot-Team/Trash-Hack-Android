@@ -1,5 +1,6 @@
 package com.example.trashhack
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -33,6 +34,11 @@ class DevControlDev : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = UsersAdapter(viewModel.myResponse_users)
+    }
+    fun todevregistrationpage(view: View?) {
+        // setContentView(R.layout.activity_login_page)
+        val intent = Intent(this, DevSignUp::class.java)
+        startActivity(intent)
     }
 
 }

@@ -69,6 +69,7 @@ class LoginPage : AppCompatActivity() {
                 writerole(this, result.subSequence(0, 3).toString())
 
                 LoggedInUser_instance.fullname = result.subSequence(4, result.length).toString()
+                writeinfo(this, LoggedInUser_instance.toString())
                 Toast.makeText(this, "Welcome back!\n".plus(LoggedInUser_instance.fullname), Toast.LENGTH_SHORT).show()
 
                 var intent = Intent(this, MainActivity::class.java)

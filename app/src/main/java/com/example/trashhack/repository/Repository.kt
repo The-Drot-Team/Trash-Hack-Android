@@ -1,6 +1,7 @@
 package com.example.trashhack.repository
 
 import com.example.trashhack.api.RetrofitInstance
+import com.example.trashhack.functions.data_manipulation.writeinfo
 import com.example.trashhack.model.*
 import com.example.trashhack.model.loggedin.LoggedInUser
 import com.example.trashhack.model.loggedin.LoggedInUser_instance
@@ -37,31 +38,15 @@ class Repository {
         role: String,
         organizationid: Int
     ) : Response<CResponse> {
-        LoggedInUser_instance = LoggedInUser(fullname, email, password)
         val temp: RegistrationForm = RegistrationForm(
             email,
             password,
             fullname,
             role,
-            organizationid
+            organizationid,
+            LoggedInUser_instance
         )
         return RetrofitInstance.api.register(temp)
-    }
-    suspend fun registerDevs(
-        email: String,
-        password: String,
-        fullname: String,
-        role: String,
-        organizationid: Int
-    ) : Response<CResponse> {
-        val temp: RegistrationForm = RegistrationForm(
-            email,
-            password,
-            fullname,
-            role,
-            organizationid
-        )
-        return RetrofitInstance.api.registerDevs(temp)
     }
 
     suspend fun login(

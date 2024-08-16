@@ -18,3 +18,9 @@ fun readrole(context: Context): String {
 fun writerole(context: Context, role: String) {
     File(context.cacheDir.path, "trash-hack.conf").writeText(role)
 }
+fun writeinfo(context: Context, info: String) {
+    File(context.cacheDir.path, "trash-hack_user.conf").writeText(info)
+}
+fun readinfo(context: Context): String {
+    return File(context.cacheDir.path, "trash-hack_user.conf").readText(Charsets.UTF_8)
+}

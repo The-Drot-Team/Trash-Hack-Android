@@ -51,18 +51,6 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             myCResponse.value = response
         }
     }
-    fun registerDevs(
-        email: String,
-        password: String,
-        fullname: String,
-        role: String,
-        organizationid: Int
-    ) {
-        viewModelScope.launch {
-            val response = repository.registerDevs(email, password, fullname, role, organizationid)
-            myCResponse.value = response
-        }
-    }
     fun login(
         email: String,
         password: String
