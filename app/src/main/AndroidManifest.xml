@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".logic_workaround"
+            android:exported="false" />
+        <activity
             android:name=".DevControlDev"
             android:exported="false" />
         <activity

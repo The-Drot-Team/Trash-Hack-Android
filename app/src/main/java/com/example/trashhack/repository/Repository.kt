@@ -1,19 +1,25 @@
 package com.example.trashhack.repository
 
 import com.example.trashhack.api.RetrofitInstance
-import com.example.trashhack.functions.data_manipulation.writeinfo
 import com.example.trashhack.model.*
-import com.example.trashhack.model.loggedin.LoggedInUser
-import com.example.trashhack.model.loggedin.LoggedInUser_instance
+import com.example.trashhack.functions.data_manipulation.userhash
+//import com.example.trashhack.model.loggedin.LoggedInUser_instance
 import retrofit2.Response
 
 class Repository {
+    /*
     suspend fun getPosts(): Posts {
         return RetrofitInstance.api.getposts()
     }
+     */
     suspend fun getDevs(): Response<MutableList<Users>> {
-        return RetrofitInstance.api.getdevs(LoggedInUser_instance)
+        return RetrofitInstance.api.getdevs(userhash.value ?: "")
     }
+
+    suspend fun getRole(): Response<String> {
+        return RetrofitInstance.api.getrole(userhash.value ?: "")
+    }
+
     /*
     suspend fun pushPostUsers(
         id: Int,
@@ -30,31 +36,63 @@ class Repository {
         return RetrofitInstance.api.pushpost(temp)
     }
      */
-
+    suspend fun devregister(
+        email: String,
+        password: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ) : Response<String> {
+        val temp: DevRegForm = DevRegForm(
+            email,
+            password,
+            fullname,
+            role,
+            organizationid,
+            userhash.value ?: ""
+        )
+        return RetrofitInstance.api.devregister(temp)
+    }
     suspend fun register(
         email: String,
         password: String,
         fullname: String,
         role: String,
         organizationid: Int
-    ) : Response<CResponse> {
+    ) : Response<String> {
         val temp: RegistrationForm = RegistrationForm(
             email,
             password,
             fullname,
             role,
-            organizationid,
-            LoggedInUser_instance
+            organizationid
         )
         return RetrofitInstance.api.register(temp)
+    }
+    suspend fun delete(
+        email: String,
+        password_hash: String,
+        fullname: String,
+        role: String,
+        organizationid: Int
+    ) : Response<String> {
+        val temp: DevRegForm = DevRegForm(
+            email,
+            password_hash,
+            fullname,
+            role,
+            organizationid,
+            userhash.value ?: ""
+        )
+        return RetrofitInstance.api.delete(temp)
     }
 
     suspend fun login(
         email: String,
         password: String
-    ) : Response<CResponse>
+    ) : Response<String>
     {
-        LoggedInUser_instance = LoggedInUser("", email, password)
+        //LoggedInUser_instance = LoggedInUser("", email, password)
         val temp: LogInForm = LogInForm(
             email,
             password

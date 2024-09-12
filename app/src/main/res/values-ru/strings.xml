@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="loading">Загрузка</string>
+    <string name="reading_hash">Читаем хеш</string>
+    <string name="retrieving_role">Получение информации о пользователе</string>
+    <string name="changing_layout">Переход на другую страницу</string>
+
     <string name="welcome_back">С возвращением!</string>
     <string name="welcome">Добро пожаловать!</string>
     <string name="prompt_surname">Фамилия</string>

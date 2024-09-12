@@ -52,11 +52,11 @@ class DevSignUp : AppCompatActivity() {
             return
         }
 
-        viewModel.register(
+        viewModel.devregister(
             removespaces(inemail.text.toString()),
             removespaces(inpassword.text.toString()),
             fullname(insurname.text.toString(), inname.text.toString(), inpatronymic.text.toString()),
-            readrole(this),
+            readhash(this),
             0
         )
         viewModel.myCResponse.observe(this, Observer{

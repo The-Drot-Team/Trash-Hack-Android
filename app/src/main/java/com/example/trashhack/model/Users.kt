@@ -3,7 +3,7 @@ package com.example.trashhack.model
 
 // My version
 data class Users (
-    var id: Int,
+    val id: Int,
     val email: String,
     val password_hash: String,
     val fullname: String, // Surname + Name + Patronymic

@@ -2,6 +2,7 @@ package com.example.trashhack
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -11,24 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.trashhack.functions.*
 import com.example.trashhack.functions.data_manipulation.*
+import com.example.trashhack.functions.navigation.*
 import com.example.trashhack.repository.Repository
 import com.example.trashhack.viewModel.MainViewModel
 import com.example.trashhack.viewModelFactory.MainViewModelFactory
 import com.example.trashhack.functions.navigation.tosignuppage
-import com.example.trashhack.model.loggedin.LoggedInUser
-import com.example.trashhack.model.loggedin.LoggedInUser_instance
-
 class LoginPage : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
-    /*
-    var result: String = ""
-    var result_bool: Boolean = true
-     */
-
     // 'in' prefix for 'input'
     lateinit var inemail: EditText
     lateinit var inpassword: EditText
-    lateinit var debug: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,34 +51,49 @@ class LoginPage : AppCompatActivity() {
             removespaces(inemail.text.toString()),
             removespaces(inpassword.text.toString())
         )
-        viewModel.myCResponse.observe(this, Observer{
-            response -> val result = response.body()?.message ?: "No response. Please try again."
-            val result_bool = response.body()?.error ?: true
-            if (result_bool) {
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-            } else { // if ok changes the layout
-                Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show()
-
-                writerole(this, result.subSequence(0, 3).toString())
-
-                LoggedInUser_instance.fullname = result.subSequence(4, result.length).toString()
-                writeinfo(this, LoggedInUser_instance.toString())
-                Toast.makeText(this, "Welcome back!\n".plus(LoggedInUser_instance.fullname), Toast.LENGTH_SHORT).show()
-
-                var intent = Intent(this, MainActivity::class.java)
-                when (readrole(this)) { // it is used as a 'role' field
-                    "DEV" -> {
-                        // get request to the server with the newly acquired data
-                        intent = Intent(this, DevMainMenu::class.java)
-                        //setContentView(R.layout.activity_dev_main_menu)
-                    }
-                    else -> { // idk what could've happened here
-                        intent = Intent(this, SignUpPage::class.java)
-                    }
+        viewModel.myStringResponse.observe(this, Observer {
+                response ->
+            if (response.body() == null) {
+                Toast.makeText(this, "No Response", Toast.LENGTH_SHORT).show()
+            } else if (response.code() != 200) {
+                var msg = response.code().toString()
+                if (response.code() == 404) {
+                    msg = "No such user"
                 }
+                Log.i("ERROR", "ROLE ERROR")
+                Toast.makeText(this, "ERROR: ".plus(msg), Toast.LENGTH_SHORT).show()
+            }  else {
+                Toast.makeText(this, "Success".plus(response.body()), Toast.LENGTH_SHORT).show()
+                userhash.value = response.body()
+                writehash(this, userhash.value!!)
+            }
+        })
+        // should I put it before the response observer?
+        userhash.observe(this, Observer {
+            Toast.makeText(this, "Asking for the role", Toast.LENGTH_SHORT).show()
+            viewModel.getRole()
+            //navigationhub(this, userrole.value!!)
+            //this.finish()
+            viewModel.myStringResponse.observe(this, Observer {
+                    response ->
+                if (response.code() != 200) {
+                    Toast.makeText(this, "Error: ".plus(response.code()), Toast.LENGTH_SHORT).show()
+                    viewModel.getRole()
+                    /*
+                    intent = Intent(this, SignUpPage::class.java)
+                    startActivity(intent)
+                    this.finish()*/
+                } else { // TODO: some problem with fetching a role
+                    Toast.makeText(this, "role is ".plus(response.body()), Toast.LENGTH_SHORT).show()
+                    userrole.value = response.body()
+                }
+            })
+        })
 
-                Toast.makeText(this, readrole(this), Toast.LENGTH_SHORT).show()
-                startActivity(intent)
+        userrole.observe(this, Observer {
+            //progresstext.setText(R.string.changing_layout)
+            if (userrole.value != null) {
+                navigationhub(this, userrole.value!!)
                 this.finish()
             }
         })
